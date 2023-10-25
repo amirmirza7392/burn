@@ -1,4 +1,5 @@
 import {StyleSheet, Text, View} from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import React from 'react';
 
 const App = () => {
