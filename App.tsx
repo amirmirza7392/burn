@@ -1,25 +1,24 @@
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {Text, View} from 'react-native';
 
-const Routes = () => {
-  const Stack = createNativeStackNavigator();
+const Tab = createBottomTabNavigator();
 
+const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator
-        screenOptions={{headerShown: false}}
-        initialRouteName={'Initial'}>
-        <Stack.Screen name="Initial" component={Initial} />
-      </Stack.Navigator>
+      <Tab.Navigator>
+        <Tab.Screen name="Screen1" component={Screen1} />
+        <Tab.Screen name="Screen2" component={Screen1} />
+      </Tab.Navigator>
     </NavigationContainer>
   );
 };
 
-export default Routes;
+export default App;
 
-const Initial = () => {
+const Screen1 = () => {
   return (
     <View
       style={{
