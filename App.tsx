@@ -1,15 +1,33 @@
-import {StyleSheet, Text, View} from 'react-native';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import React from 'react';
+import {Text, View} from 'react-native';
 
-const App = () => {
+const Routes = () => {
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View>
-      <Text>App</Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{headerShown: false}}
+        initialRouteName={'Initial'}>
+        <Stack.Screen name="Initial" component={Initial} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-export default App;
+export default Routes;
 
-const styles = StyleSheet.create({});
+const Initial = () => {
+  return (
+    <View
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1,
+      }}>
+      <Text>hi</Text>
+    </View>
+  );
+};
