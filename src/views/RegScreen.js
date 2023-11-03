@@ -1,5 +1,4 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   Alert,
   Text,
@@ -7,19 +6,20 @@ import {
   View,
   ImageBackground,
   SafeAreaView,
-} from "react-native";
-import COLORS from "../consts/colors";
-import { PrimaryButton } from "../consts/buttons";
-import { SelectList } from "react-native-dropdown-select-list";
-import { collection, setDoc, addDoc } from "@firebase/firestore";
-import { auth, app, db } from "../../firebase";
-import { TextInput } from "react-native";
+  StatusBar,
+} from 'react-native';
+import COLORS from '../consts/colors';
+import {PrimaryButton} from '../consts/buttons';
+import {SelectList} from 'react-native-dropdown-select-list';
+// import { collection, setDoc, addDoc } from "@firebase/firestore";
+import {auth, app, db} from '../../firebase';
+import {TextInput} from 'react-native';
 
-const RegScreen = ({ navigation }) => {
-  const [selected, setSelected] = React.useState("");
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [pass, setPass] = React.useState("");
+const RegScreen = ({navigation}) => {
+  const [selected, setSelected] = React.useState('');
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [pass, setPass] = React.useState('');
   const [errors, setErrors] = useState({});
   const [isFormValid, setIsFormValid] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -33,23 +33,23 @@ const RegScreen = ({ navigation }) => {
 
     // Validate name field
     if (!name) {
-      errors.name = "Name is required.";
+      errors.name = 'Name is required.';
     }
 
     if (!selected) {
-      errors.selected = "Group is required.";
+      errors.selected = 'Group is required.';
     }
 
     // Validate email field
     if (!email) {
-      errors.email = "Username is required.";
+      errors.email = 'Username is required.';
     }
 
     // Validate password field
     if (!pass) {
-      errors.pass = "Password is required.";
+      errors.pass = 'Password is required.';
     } else if (pass.length < 6) {
-      errors.pass = "Password must be at least 6 characters.";
+      errors.pass = 'Password must be at least 6 characters.';
     }
 
     // Set the errors and update form validity
@@ -59,18 +59,18 @@ const RegScreen = ({ navigation }) => {
 
   const reg_handler = () => {
     Alert.alert(
-      "Confirmation Box",
-      "I confirmed that all information entered are correct.",
-      [{ text: "Confirm", onPress: () => to_login() }],
-      { cancelable: false }
+      'Confirmation Box',
+      'I confirmed that all information entered are correct.',
+      [{text: 'Confirm', onPress: () => to_login()}],
+      {cancelable: false},
     );
   };
 
   const to_login = () => {
-    alert("Account successfully created");
-    console.log("Form submitted successfully!");
+    alert('Account successfully created');
+    console.log('Form submitted successfully!');
 
-    navigation.navigate("Login");
+    navigation.navigate('Login');
   };
 
   const handleSubmit = async () => {
@@ -78,51 +78,50 @@ const RegScreen = ({ navigation }) => {
       const generateColor = () => {
         const randomColor = Math.floor(Math.random() * 360)
           .toString(16)
-          .padStart(6, "0");
+          .padStart(6, '0');
         return `#${randomColor}`;
       };
 
       try {
-        const docRef = await addDoc(collection(db, "user"), {
+        const docRef = await addDoc(collection(db, 'user'), {
           name: name,
           group: selected,
           username: email,
           password: pass,
-          status: "member",
+          status: 'member',
           color: generateColor(),
         });
-        console.log("Document written with ID: ", docRef.id);
+        console.log('Document written with ID: ', docRef.id);
       } catch (e) {
-        console.error("Error adding document: ", e);
+        console.error('Error adding document: ', e);
       }
 
       reg_handler();
     } else {
       // Form is invalid, display error messages
-      console.log("Form has errors. Empty field");
-      alert("Form has errors. Empty field.");
+      console.log('Form has errors. Empty field');
+      alert('Form has errors. Empty field.');
     }
   };
 
   const data = [
-    { key: "1", value: "Group 1" },
-    { key: "2", value: "Group 2" },
-    { key: "3", value: "Group 3" },
-    { key: "4", value: "Group 4" },
-    { key: "5", value: "Group 5" },
-    { key: "6", value: "Group 6" },
-    { key: "7", value: "Group 7" },
+    {key: '1', value: 'Group 1'},
+    {key: '2', value: 'Group 2'},
+    {key: '3', value: 'Group 3'},
+    {key: '4', value: 'Group 4'},
+    {key: '5', value: 'Group 5'},
+    {key: '6', value: 'Group 6'},
+    {key: '7', value: 'Group 7'},
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{flex: 1}}>
       <ImageBackground
-        style={{ flex: 1 }}
-        source={require("../assets/MyHorseBg.png")}
-      >
+        style={{flex: 1}}
+        source={require('../assets/MyHorseBg.png')}>
         <View style={style.mainContainer}>
           <View style={style.loginframe3}>
-            <Text style={{ fontSize: 20, color: COLORS.primary }}>
+            <Text style={{fontSize: 20, color: COLORS.primary}}>
               Registration Form
             </Text>
             <Text
@@ -131,8 +130,7 @@ const RegScreen = ({ navigation }) => {
                 color: COLORS.grey,
                 marginTop: 10,
                 marginHorizontal: 16,
-              }}
-            >
+              }}>
               Reminder: All data can be edited though the account's panel except
               for the group. Be advised to ask to yout specific group before
               proceeding to the registration.
@@ -142,7 +140,7 @@ const RegScreen = ({ navigation }) => {
           <View style={style.loginframe}>
             <TextInput
               value={name}
-              onChangeText={(text) => setName(text)}
+              onChangeText={text => setName(text)}
               placeholder="Complete Name"
               style={style.input}
             />
@@ -151,7 +149,7 @@ const RegScreen = ({ navigation }) => {
           <View style={style.loginframeS}>
             <SelectList
               value={selected}
-              setSelected={(val) => setSelected(val)}
+              setSelected={val => setSelected(val)}
               data={data}
               save="value"
               search={false}
@@ -163,7 +161,7 @@ const RegScreen = ({ navigation }) => {
             <TextInput
               value={email}
               type="text"
-              onChangeText={(text) => setEmail(text)}
+              onChangeText={text => setEmail(text)}
               placeholder="Username"
               style={style.input}
             />
@@ -171,7 +169,7 @@ const RegScreen = ({ navigation }) => {
             <TextInput
               value={pass}
               type="text"
-              onChangeText={(text) => setPass(text)}
+              onChangeText={text => setPass(text)}
               placeholder="Password"
               style={style.input}
               secureTextEntry
@@ -183,16 +181,15 @@ const RegScreen = ({ navigation }) => {
               <ActivityIndicator size="large" color="#0000FF" />
             ) : (
               <>
-                <PrimaryButton title={"Submit"} onPress={handleSubmit} />
+                <PrimaryButton title={'Submit'} onPress={handleSubmit} />
               </>
             )}
           </View>
 
           <View style={style.loginframe3}>
             <Text
-              style={{ fontSize: 18, color: COLORS.primary }}
-              onPress={() => navigation.navigate("Login")}
-            >
+              style={{fontSize: 18, color: COLORS.primary}}
+              onPress={() => navigation.navigate('Login')}>
               Already have an account
             </Text>
           </View>
@@ -206,7 +203,7 @@ const RegScreen = ({ navigation }) => {
 const style = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     paddingHorizontal: 20,
   },
 
@@ -221,52 +218,52 @@ const style = StyleSheet.create({
   },
 
   loginframe: {
-    width: "auto",
+    width: 'auto',
     paddingTop: 3,
     marginHorizontal: 20,
   },
 
   loginframeS: {
-    width: "auto",
+    width: 'auto',
     paddingTop: 3,
     marginHorizontal: 23,
   },
 
   loginframeS2: {
-    width: "auto",
+    width: 'auto',
     paddingTop: 8,
     marginHorizontal: 23,
   },
 
   loginframe2: {
-    width: "auto",
+    width: 'auto',
     paddingHorizontal: 30,
     marginTop: 20,
   },
 
   loginframe3: {
-    width: "auto",
-    alignItems: "center",
+    width: 'auto',
+    alignItems: 'center',
     padding: 10,
   },
 
   button: {
-    backgroundColor: "green",
+    backgroundColor: 'green',
     borderRadius: 8,
     paddingVertical: 10,
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 16,
     marginBottom: 12,
   },
 
   buttonText: {
-    color: "#fff",
-    fontWeight: "bold",
+    color: '#fff',
+    fontWeight: 'bold',
     fontSize: 16,
   },
 
   error: {
-    color: "red",
+    color: 'red',
     fontSize: 10,
     marginBottom: 12,
   },

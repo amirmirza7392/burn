@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -6,14 +6,14 @@ import {
   View,
   Image,
   ImageBackground,
-} from "react-native";
-import COLORS from "../consts/colors";
-import { PrimaryButton } from "../consts/buttons";
-import { StatusBar } from "expo-status-bar";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+  StatusBar,
+} from 'react-native';
+import COLORS from '../consts/colors';
+import {PrimaryButton} from '../consts/buttons';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
-const OnBoardScreen = ({ navigation }) => {
-  const [user] = React.useState("");
+const OnBoardScreen = ({navigation}) => {
+  const [user] = React.useState('');
   const [loading, setLoading] = useState(false);
   let target;
 
@@ -21,13 +21,13 @@ const OnBoardScreen = ({ navigation }) => {
 
   const getData = async () => {
     try {
-      const value = await ReactNativeAsyncStorage.getItem("Prime");
-      console.log("Home: User account no:" + value);
+      const value = await ReactNativeAsyncStorage.getItem('Prime');
+      console.log('Home: User account no:' + value);
 
       if (value === undefined || value === null) {
-        navigation.navigate("Login");
+        navigation.navigate('Login');
       } else {
-        navigation.navigate("Home");
+        navigation.navigate('Home');
       }
     } catch (error) {
       console.log(error);
@@ -37,32 +37,30 @@ const OnBoardScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={style.safeviewstyle}>
       <ImageBackground
-        style={{ flex: 1 }}
-        source={require("../assets/MyHorseBg.png")}
-      >
-        <View style={{ height: 400 }}>
+        style={{flex: 1}}
+        source={require('../assets/MyHorseBg.png')}>
+        <View style={{height: 400}}>
           <Image
             style={{
-              width: "80%",
-              marginLeft: "auto",
-              marginRight: "auto",
-              resizeMode: "contain",
+              width: '80%',
+              marginLeft: 'auto',
+              marginRight: 'auto',
+              resizeMode: 'contain',
               top: -330,
             }}
-            source={require("../../src/assets/MyHorse.png")}
+            source={require('../../src/assets/MyHorse.png')}
           />
         </View>
 
         <View style={style.textContainer}>
           <View>
-            <Text style={{ fontSize: 22, textAlign: "center" }}>
-              {" "}
+            <Text style={{fontSize: 22, textAlign: 'center'}}>
+              {' '}
               Barn Scheduling App
             </Text>
             <Text
-              style={{ fontSize: 16, textAlign: "center", color: COLORS.grey }}
-            >
-              {" "}
+              style={{fontSize: 16, textAlign: 'center', color: COLORS.grey}}>
+              {' '}
               Created by: FindingOppa
             </Text>
           </View>
@@ -85,7 +83,7 @@ const style = StyleSheet.create({
   textContainer: {
     flex: 1,
     paddingHorizontal: 50,
-    justifyContent: "space-between",
+    justifyContent: 'space-between',
     paddingBottom: 40,
   },
 

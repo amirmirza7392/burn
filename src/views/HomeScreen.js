@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   Text,
@@ -8,37 +8,37 @@ import {
   Pressable,
   Alert,
   SectionList,
-} from "react-native";
-import moment from "moment";
-import COLORS from "../consts/colors";
-import { StatusBar } from "expo-status-bar";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
-import Schedule from "f-react-native-schedule";
-import { TextInput } from "react-native-gesture-handler";
-import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
-import { auth, app, db } from "../../firebase";
-import { set } from "date-fns";
-import { firebase } from "@react-native-firebase/database";
+  StatusBar,
+} from 'react-native';
+import moment from 'moment';
+import COLORS from '../consts/colors';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+import {Calendar, CalendarList, Agenda} from 'react-native-calendars';
+import Schedule from 'f-react-native-schedule';
+import {TextInput} from 'react-native-gesture-handler';
+// import { collection, query, where, getDocs, addDoc } from "firebase/firestore";
+import {auth, app, db} from '../../firebase';
+import {set} from 'date-fns';
+// import {firebase} from '@react-native-firebase/database';
 
 const DATA = [
   {
-    title: "Calendar",
-    data: ["Marking days"],
+    title: 'Calendar',
+    data: ['Marking days'],
   },
 ];
 
-const HomeScreen = ({ navigation }) => {
-  const [selected, setSelected] = useState("");
+const HomeScreen = ({navigation}) => {
+  const [selected, setSelected] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
 
   //add schedule
-  const [newdate, setnewDate] = React.useState("");
-  const [newdesc, setnewDesc] = React.useState("");
-  const [newstamp, setnewStamp] = React.useState("");
-  const [userid, setUser] = useState("");
+  const [newdate, setnewDate] = React.useState('');
+  const [newdesc, setnewDesc] = React.useState('');
+  const [newstamp, setnewStamp] = React.useState('');
+  const [userid, setUser] = useState('');
 
-  const current_date = moment().format("YYYY-MM-DD");
+  const current_date = moment().format('YYYY-MM-DD');
 
   useEffect(() => {
     getData();
@@ -47,11 +47,11 @@ const HomeScreen = ({ navigation }) => {
     function loadItems() {
       firebase
         .firestore()
-        .collection("task")
-        .get.then((snapshot) => {
-          snapshot.foreach((doc) => {
+        .collection('task')
+        .get.then(snapshot => {
+          snapshot.foreach(doc => {
             DataTransferItemList.push({
-              [doc.date]: [{ name: doc.desc, description: doc.desc }],
+              [doc.date]: [{name: doc.desc, description: doc.desc}],
             });
           });
         });
@@ -61,17 +61,17 @@ const HomeScreen = ({ navigation }) => {
 
   const getData = async () => {
     try {
-      const value = await ReactNativeAsyncStorage.getItem("Prime");
-      console.log("Home: User account no: " + value);
+      const value = await ReactNativeAsyncStorage.getItem('Prime');
+      console.log('Home: User account no: ' + value);
       setUser(value);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const add_schedule = (stamp) => {
+  const add_schedule = stamp => {
     let _date = new Date(stamp);
-    console.log(stamp + " : " + _date);
+    console.log(stamp + ' : ' + _date);
     setnewStamp(stamp);
     setnewDate(_date);
 
@@ -79,14 +79,14 @@ const HomeScreen = ({ navigation }) => {
   };
 
   const add_task = async () => {
-    if (newdesc === undefined || newdesc === null || newdesc === "") {
-      alert("Error: Empty field");
+    if (newdesc === undefined || newdesc === null || newdesc === '') {
+      alert('Error: Empty field');
     } else {
       try {
-        let _in_mark = "on-going";
+        let _in_mark = 'on-going';
         let _in_stamp = newstamp.toString();
 
-        const docRef = await addDoc(collection(db, "task"), {
+        const docRef = await addDoc(collection(db, 'task'), {
           date: selected,
           desc: newdesc,
           mark: _in_mark,
@@ -94,25 +94,25 @@ const HomeScreen = ({ navigation }) => {
           userid: userid,
         });
 
-        console.log("Document written with ID: " + userid);
+        console.log('Document written with ID: ' + userid);
 
-        alert("Schedule successfully added!");
+        alert('Schedule successfully added!');
         setModalVisible(!modalVisible);
         clear_modal();
       } catch (e) {
-        console.error("Error adding document: ", e);
+        console.error('Error adding document: ', e);
       }
     }
   };
 
   const cancel_add = async () => {
-    console.log("Cancel : " + userid);
+    console.log('Cancel : ' + userid);
     clear_modal();
     setModalVisible(!modalVisible);
   };
 
   const clear_modal = () => {
-    let new_date = "";
+    let new_date = '';
     setnewDesc(new_date);
   };
 
@@ -121,12 +121,12 @@ const HomeScreen = ({ navigation }) => {
       <SectionList
         sections={DATA}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
-          <View style={{ width: "auto" }}>
+        renderItem={({item}) => (
+          <View style={{width: 'auto'}}>
             <Calendar
-              onDayPress={(day) => {
+              onDayPress={day => {
                 setSelected(day.dateString);
-                console.log("Selected day: ", day);
+                console.log('Selected day: ', day);
               }}
               markedDates={{
                 [selected]: {
@@ -134,37 +134,34 @@ const HomeScreen = ({ navigation }) => {
                   disableTouchEvent: true,
                   selectedDotColor: COLORS.primary,
                 },
-                [sched_dates]: {
-                  selected: true,
-                  marked: true,
-                  selectedColor: COLORS.primary,
-                },
+                // [sched_dates]: {
+                //   selected: true,
+                //   marked: true,
+                //   selectedColor: COLORS.primary,
+                // },
               }}
             />
           </View>
-        )}
-      ></SectionList>
+        )}></SectionList>
 
       <SectionList
         sections={DATA}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => (
+        renderItem={({item}) => (
           <View style={styles.item}>
             <Schedule
-              style={{ marginTop: 5 }}
-              cellDimensions={{ height: 50 }}
+              style={{marginTop: 5}}
+              cellDimensions={{height: 50}}
               currentView="day"
               selectedDate={selected}
-              onCellLongPress={(value) => {
+              onCellLongPress={value => {
                 //console.log("Value of cell: " + new Date(value));
                 //console.log("Value of cell: " + value);
                 //console.log(selected);
                 add_schedule(value);
-              }}
-            ></Schedule>
+              }}></Schedule>
           </View>
-        )}
-      ></SectionList>
+        )}></SectionList>
 
       <StatusBar style="auto" />
 
@@ -174,13 +171,12 @@ const HomeScreen = ({ navigation }) => {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
+            Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
-          }}
-        >
+          }}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={{ padding: 10, fontSize: 20 }}>Add Task</Text>
+              <Text style={{padding: 10, fontSize: 20}}>Add Task</Text>
               <TextInput
                 style={{
                   padding: 20,
@@ -195,19 +191,16 @@ const HomeScreen = ({ navigation }) => {
                 numberOfLines={4}
                 maxLength={50}
                 type="text"
-                onChangeText={(text) => setnewDesc(text)}
-                value={newdesc}
-              ></TextInput>
+                onChangeText={text => setnewDesc(text)}
+                value={newdesc}></TextInput>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => add_task()}
-              >
+                onPress={() => add_task()}>
                 <Text style={styles.textStyle}>Submit</Text>
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonOpen]}
-                onPress={() => cancel_add()}
-              >
+                onPress={() => cancel_add()}>
                 <Text style={styles.textStyle}>Cancel</Text>
               </Pressable>
             </View>
@@ -225,18 +218,18 @@ const styles = StyleSheet.create({
 
   centeredView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 22,
   },
 
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     borderRadius: 10,
     padding: 15,
-    justifyContent: "center",
-    shadowColor: "#000",
+    justifyContent: 'center',
+    shadowColor: '#000',
     shadowOffset: {
       width: 0,
       height: 2,
@@ -264,8 +257,8 @@ const styles = StyleSheet.create({
   },
 
   textStyle: {
-    color: "white",
-    textAlign: "center",
+    color: 'white',
+    textAlign: 'center',
     padding: 5,
   },
 

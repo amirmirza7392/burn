@@ -1,22 +1,21 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState, useEffect, useCallback } from "react";
-import { FlatList, Text, StyleSheet, View } from "react-native";
-import { Alert, SafeAreaView, ImageBackground } from "react-native";
-import {
-  collection,
-  query,
-  where,
-  getDocs,
-  documentId,
-  doc,
-  updateDoc,
-} from "firebase/firestore";
-import { auth, app, db } from "../../firebase";
-import ReactNativeAsyncStorage from "@react-native-async-storage/async-storage";
+import React, {useState, useEffect, useCallback} from 'react';
+import {FlatList, Text, StyleSheet, View, StatusBar} from 'react-native';
+import {Alert, SafeAreaView, ImageBackground} from 'react-native';
+// import {
+//   collection,
+//   query,
+//   where,
+//   getDocs,
+//   documentId,
+//   doc,
+//   updateDoc,
+// } from "firebase/firestore";
+import {auth, app, db} from '../../firebase';
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
-const GroupScreen = ({ navigation }) => {
+const GroupScreen = ({navigation}) => {
   const [listItems, setListItems] = useState([]);
-  const [group, setGroup] = useState("");
+  const [group, setGroup] = useState('');
 
   //get the group
   useEffect(() => {
@@ -26,33 +25,33 @@ const GroupScreen = ({ navigation }) => {
   //get userid
   const getData = async () => {
     try {
-      const value = await ReactNativeAsyncStorage.getItem("Prime");
+      const value = await ReactNativeAsyncStorage.getItem('Prime');
       if (value !== null) {
-        console.log("Group -get data value: " + value);
+        console.log('Group -get data value: ' + value);
         get_user_data(value);
       } else {
-        console.log("ID no value");
-        navigation.navigate("Login");
+        console.log('ID no value');
+        navigation.navigate('Login');
       }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const get_user_data = async (_id) => {
+  const get_user_data = async _id => {
     if (!_id) {
       //logout();
-      console.log("Group: id empty");
+      console.log('Group: id empty');
     } else {
-      console.log("Group show id: " + _id);
+      console.log('Group show id: ' + _id);
 
-      const q = query(collection(db, "user"), where(documentId(), "==", _id));
+      const q = query(collection(db, 'user'), where(documentId(), '==', _id));
       const querySnapshot = await getDocs(q);
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(doc => {
         console.log(doc.data());
 
-        setGroup(doc.data()["group"]);
-        console.log("Group: retreive group: " + doc.data()["group"]);
+        setGroup(doc.data()['group']);
+        console.log('Group: retreive group: ' + doc.data()['group']);
       });
     }
   };
@@ -60,12 +59,12 @@ const GroupScreen = ({ navigation }) => {
   //populate the array
   const array_data = async () => {
     setListItems([]);
-    const q = query(collection(db, "user"), where("group", "==", group));
+    const q = query(collection(db, 'user'), where('group', '==', group));
     const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-      let nym = doc.data()["name"];
-      let syt = doc.data()["status"];
-      let col = doc.data()["color"]; //
+    querySnapshot.forEach(doc => {
+      let nym = doc.data()['name'];
+      let syt = doc.data()['status'];
+      let col = doc.data()['color']; //
 
       let arr = [
         {
@@ -75,32 +74,31 @@ const GroupScreen = ({ navigation }) => {
         },
       ];
 
-      setListItems((current) => [...current, ...arr]);
+      setListItems(current => [...current, ...arr]);
       console.log(doc.data());
     });
   };
 
-  const ItemView = ({ item }) => {
+  const ItemView = ({item}) => {
     return (
       // Single Comes here which will be repeatative for the FlatListItems
-      <View style={{ paddingLeft: 20, flex: 1, flexDirection: "row" }}>
+      <View style={{paddingLeft: 20, flex: 1, flexDirection: 'row'}}>
         <View
           style={{
-            justifyContent: "center",
+            justifyContent: 'center',
             width: 50,
             height: 50,
             backgroundColor: item.color,
             borderRadius: 150 / 2,
-            alignSelf: "center",
+            alignSelf: 'center',
             marginRight: 20,
-          }}
-        >
-          <Text style={{ textAlign: "center", fontSize: 24 }}>
+          }}>
+          <Text style={{textAlign: 'center', fontSize: 24}}>
             {Array.from(item.name)[0]}
           </Text>
         </View>
         <View style={styles.item}>
-          <Text style={{ fontSize: 20 }} onPress={() => getItem(item)}>
+          <Text style={{fontSize: 20}} onPress={() => getItem(item)}>
             {item.name}
           </Text>
           <Text onPress={() => getItem(item)}>{item.stat}</Text>
@@ -112,20 +110,18 @@ const GroupScreen = ({ navigation }) => {
   const ItemSeparatorView = () => {
     return (
       //Item Separator
-      <View
-        style={{ height: 0.5, width: "100%", backgroundColor: "#C8C8C8" }}
-      />
+      <View style={{height: 0.5, width: '100%', backgroundColor: '#C8C8C8'}} />
     );
   }; //
 
-  const getItem = (item) => {
+  const getItem = item => {
     //Function for click on an item //
     Alert.alert(
       item.name,
       item.stat,
-      [{ text: "Close", onPress: () => console.log("View " + item.name) }],
+      [{text: 'Close', onPress: () => console.log('View ' + item.name)}],
 
-      { cancelable: false }
+      {cancelable: false},
     );
 
     //alert('Name : ' + item.name + ' Designation : ' + item.stat);
@@ -134,10 +130,9 @@ const GroupScreen = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.mainContainer}>
       <ImageBackground
-        style={{ flex: 1 }}
-        source={require("../assets/MyHorseBg.png")}
-      >
-        <View style={{ flex: 1 }}>
+        style={{flex: 1}}
+        source={require('../assets/MyHorseBg.png')}>
+        <View style={{flex: 1}}>
           <FlatList
             data={listItems}
             ItemSeparatorComponent={ItemSeparatorView}
@@ -155,8 +150,8 @@ const GroupScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   item: {
     paddingTop: 10,

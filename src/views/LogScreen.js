@@ -1,7 +1,6 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import {StyleSheet, Text, View, StatusBar} from 'react-native';
 
-const LogScreen = ({ navigation }) => {
+const LogScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text>Log Screen</Text>
@@ -13,10 +12,10 @@ const LogScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center"
-  }
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 });
 
 export default LogScreen;
